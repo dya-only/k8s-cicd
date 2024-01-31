@@ -21,13 +21,6 @@ jobs:
           echo "::set-output name=hub_repository::dyaonly/k8s-nest"
           echo "::set-output name=image_tag::latest"
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
   build:
     needs: prebuild
     runs-on: ubuntu-latest
@@ -50,24 +43,4 @@ jobs:
 
       - name: Build, tag, and push image to Docker Hub
         run: |
-          docker build -t ${{ needs.prebuild.outputs.hub_repository }}:${{ needs.prebuild.outputs.image_tag }} --push .
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Deploy to AWS EKS
-        run: |
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name k8s-cluster
-          kubectl apply -f k8s/.
-          
+          docker build -t ${{ needs.prebuild.outputs.hub_repository }}:${{ needs.prebuild.outputs.image_tag }} --push . 
