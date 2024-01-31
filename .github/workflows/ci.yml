@@ -19,7 +19,7 @@ jobs:
         id: set_vars
         run: |
           echo "::set-output name=hub_repository::dyaonly/k8s-nest"
-          echo "::set-output name=image_tag::${{ github.run_attempt }}"
+          echo "::set-output name=image_tag::2"
 
   build:
     needs: prebuild
