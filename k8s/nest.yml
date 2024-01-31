@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nest
-        image: dyaonly/k8s-nest:1
+        image: dyaonly/k8s-nest:2
         ports:
         - containerPort: 3000
         env:
